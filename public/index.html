@@ -37,7 +37,7 @@
 
             const body = { id_token: response.credential } // debe de mantar el token, manda el token de google sus credenciales
 
-            fetch('http://localhost:8080/api/auth/google',{
+            fetch('http://localhost:8080/api/auth/google'||'https://node-restserver-basic-production.up.railway.app',{
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'
