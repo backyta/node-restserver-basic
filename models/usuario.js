@@ -13,7 +13,7 @@ const UsuarioSchema = Schema({
     },
     password:{
         type: String,
-        required: [true, 'La password es obligatoria']
+        required: [true, 'La password es obligatoria'] //[ this.google === false, 'La contraseña es requerida.' ]
     },
     img:{
         type: String,

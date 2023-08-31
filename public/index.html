@@ -3,11 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso denegado</title>
+    <title>Google Sign In</title>
 </head>
 <body>
+    <h1>Google Sign In</h1>
+    <hr>
     
-    <h1>Acceso Denegado</h1>
+    <div id="g_id_onload"
+         data-client_id="300892635078-ijpa35mi01tgkctpnsuqaqs9v6bujbmt.apps.googleusercontent.com"
+         data-auto_prompt="false"
+         data-callback="handleCredentialResponse">
+      </div>
+      <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+      </div>
+
+      <button id="google_signout">
+        Signout 
+      </button>
     
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <script>
+        function handleCredentialResponse(response) {
+    
+            //Google token : ID_TOKEN
+            // console.log('id-token', response.credential);
+
+            const body = { id_token: response.credential } // debe de mantar el token, manda el token de google sus credenciales
+
+            fetch('http://localhost:8080/api/auth/google',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify( body ) // teansforma el objeto en una cadena de texto con formato JSON
+            })
+                .then( resp => resp.json()) // extrae y analiza el json de la respuesta y devuelve una promesa que resuelve en un objeto js
+                .then( resp => {
+                    console.log(resp); // la respuesta de backend en formato json ya convetido a objeto
+                    localStorage.setItem('email', resp.usuario.correo )
+                })
+                .catch( console.warn )
+        }
+
+
+        const button = document.getElementById('google_signout');
+        button.onclick = () =>{
+
+            console.log( google.accounts.id );
+            google.accounts.id.disableAutoSelect(); // mnatenerlo desactivado
+            //* para hacer el sign out necesitamos el correo del que se logeo, por eso lo guiardamos
+            //* en el localStorage y luego con ese mismo lo botene,os y ahcemos el signup
+
+            google.accounts.id.revoke( localStorage.getItem('email'), done =>{
+                localStorage.clear();
+                location.reload();
+            })
+
+        }
+
+
+    </script>
 </body>
 </html>
