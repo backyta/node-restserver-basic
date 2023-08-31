@@ -81,6 +81,7 @@ const usersPut = async (req, res = response) => {
 const usersDelete = async (req, res = response) => {
 
     const { id } = req.params;
+    // const uid = req.uid;
 
     //* Fisicamente borrar, no se recomienda
     // const user = await User.findByIdAndDelete( id ); // no se recomienda
@@ -91,8 +92,11 @@ const usersDelete = async (req, res = response) => {
     //* o servicios rest ese registro fue eliminado pero para mi base de datos o entidad referencial 
     //* siempre va existir
 
+    // const usuarioAutenticado = req.usuario
+
     res.json({
-        user
+        user,
+        /* usuarioAutenticado */
     });
 }
 
