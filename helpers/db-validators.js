@@ -1,5 +1,9 @@
+const { crearCategoria } = require('../controllers/categories')
+const { Categoria, User, Producto } = require('../models')
 const Role = require('../models/role')
-const User = require('../models/usuario')
+
+
+//Validadores perzonalizados
 
 const esRoleValido = async (role = '' ) => {
     const existRole = await Role.findOne({ role: role })// si esciste quire decir que esta grabado en la BD
@@ -25,6 +29,24 @@ const existeUserPorId = async ( id = '') =>{
 }
 
 
+const existeCategoriaPorId = async ( id = '' ) =>{
+
+    const existeCategoria = await Categoria.findById(id);
+    if ( !existeCategoria ) {
+        throw new Error(`El id no existe ${ id }`)
+    }
+}
+
+const existeProductoPorId = async ( id = '' ) =>{
+    console.log( id );
+    const existeProducto = await Producto.findById(id);
+    console.log(existeProducto);
+
+    if ( !existeProducto ) {
+        throw new Error(`El id no existe ${ id }`)
+    }
+}
+
 
 
 
@@ -32,5 +54,7 @@ const existeUserPorId = async ( id = '') =>{
 module.exports = {
     esRoleValido,
     emailExiste,
-    existeUserPorId
+    existeUserPorId,
+    existeCategoriaPorId,
+    existeProductoPorId
 }
