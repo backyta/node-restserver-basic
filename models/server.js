@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const { dbConnection } = require('../db/config');
+const fileUpload = require('express-fileupload');
 
 
 class Server{
@@ -15,7 +16,8 @@ class Server{
             buscar: '/api/buscar',
             users: '/api/users',
             productos: '/api/productos',
-            categories: '/api/categories'
+            categories: '/api/categories',
+            uploads: '/api/uploads'
         }
         
         //Connectio to DB
@@ -44,7 +46,14 @@ class Server{
         this.app.use( express.json() ); // cualquier info que vengan en el body, la va intentar serealizar a un objeto JS y retorna un Json en el controlador
 
         //Directorio publico
-        this.app.use( express.static('public') ) // tiene la ruta por defecto '/', por eso no aplica la ruta 'hello world'
+        this.app.use( express.static('public') ); // tiene la ruta por defecto '/', por eso no aplica la ruta 'hello world'
+
+        //Fileupload, carga de archivos
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/',
+            createParentPath: true // para crear carpetas, tener cuidado.
+        }));
     }
 
     routes(){
@@ -52,6 +61,7 @@ class Server{
         this.app.use( this.paths.auth , require('../routes/auth'))
         this.app.use( this.paths.buscar, require('../routes/buscar'))
         this.app.use( this.paths.users , require('../routes/users'))
+        this.app.use( this.paths.uploads , require('../routes/uploads'))
         this.app.use( this.paths.productos , require('../routes/productos'))
         this.app.use( this.paths.categories , require('../routes/categories'))
     }

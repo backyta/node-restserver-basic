@@ -47,7 +47,16 @@ const existeProductoPorId = async ( id = '' ) =>{
     }
 }
 
+// Validar colecciones Permitidas
+const coleccionesPermitidas = async ( coleccion = '', colecciones = [] ) => {
 
+    const incluida = colecciones.includes( coleccion );
+    if ( !incluida ) {
+        throw new Error(`La coleccion ${ coleccion } no es permitida, ${ colecciones }`)
+    }
+
+    return true; // en realidad se manda un true implicito y deberiamos colocarlo en todas las helpers
+}
 
 
 
@@ -56,5 +65,6 @@ module.exports = {
     emailExiste,
     existeUserPorId,
     existeCategoriaPorId,
-    existeProductoPorId
+    existeProductoPorId,
+    coleccionesPermitidas
 }
